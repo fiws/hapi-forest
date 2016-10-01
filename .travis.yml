@@ -4,3 +4,7 @@ node_js:
 
 services:
   - mongodb
+
+cache:
+  directories:
+  - node_modules # NPM packages
