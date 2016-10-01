@@ -1,0 +1,43 @@
+{
+  "name": "hapi-forest",
+  "version": "0.1.0",
+  "description": "A hapi plugin to generate routes based on mongoose models",
+  "main": "forest.js",
+  "scripts": {
+    "test": "npm run lint . && nyc  --check-coverage --lines 50 ava",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "keywords": [
+    "hapi-plugin",
+    "rest",
+    "crud",
+    "mongoose",
+    "route",
+    "generation"
+  ],
+  "author": "Filip Weiss <me@fiws.net>",
+  "license": "MIT",
+  "dependencies": {
+    "JSONStream": "^1.1.4",
+    "boom": "^4.0.0",
+    "joi": "^9.0.4",
+    "lodash": "^4.15.0"
+  },
+  "devDependencies": {
+    "ava": "^0.16.0",
+    "blipp": "^2.3.0",
+    "eslint": "^3.5.0",
+    "hapi": "^15.0.3",
+    "lint-staged": "^3.0.1",
+    "mongoose": "^4.6.0",
+    "nyc": "^8.1.0",
+    "pre-commit": "^1.1.3"
+  }
+}
