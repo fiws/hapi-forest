@@ -8,12 +8,28 @@ const mongoose = require('mongoose');
 server.app.db = mongoose.connect('localhost');
 
 server.connection({ port: 8080 });
-server.register({
-  register: require('../forest'),
-  options: {
-    bootstrap: [require('./models/cat-model'), require('./models/user-model')]
+
+const plugins = [
+  {
+    register: require('../forest'),
+    options: {
+      bootstrap: [ require('./models/cat-model'), require('./models/user-model') ]
+    }
+  },
+  // hapi-forest works great with hapi-swagger, but it is not required
+  require('vision'),
+  require('inert'), {
+    register: require('hapi-swagger'),
+    options: {
+      info: {
+        title: 'hapi-forest test API',
+        version: '1.0.0'
+      }
+    }
   }
-}, e => {
+];
+
+server.register(plugins, e => {
   if (e) console.error(e);
   else console.log('Bootstraped all model routes');
 });
@@ -22,15 +38,5 @@ server.register(require('blipp'));
 
 server.start((err) => {
   if (err) throw err;
-  server.route({
-    method: 'GET',
-    path: '/otherCats/{id}',
-    handler: {
-      forest: {
-        model: require('./models/cat-model'),
-        select: 'likes name'
-      }
-    }
-  })
   console.log(`example server started @ ${server.info.uri}`);
 });

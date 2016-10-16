@@ -7,9 +7,10 @@ var schema = new mongoose.Schema({
   nameLower: { type: String, unique: true, lowercase: true, required: true },
   email: { type: String, unique: true, lowercase: true },
   isAdmin: { type: Boolean, default: false },
-  cats: { type: mongoose.Schema.Types.Oid, ref: 'Cat' },
+  cats: [{ type: mongoose.Schema.Types.Oid, ref: 'Cat' }],
+  arr: [{ some: String, random: Number, stuff: [ Number ] }],
   key: String,
-  settings: mongoose.Schema.Types.Mixed
+  settings: mongoose.Schema.Types.Mixed,
 }, {
   timestamps: true
 });
