@@ -1,11 +1,8 @@
-'use strict';
-
 const test = require('ava');
-
-const Hapi = require('hapi');
+const hapi = require('hapi');
 
 test.cb('register without errors (no opts)', (t) => {
-  const server = new Hapi.Server();
+  const server = new hapi.Server();
   server.register({
     register: require('../forest')
   }, e => {
@@ -16,7 +13,7 @@ test.cb('register without errors (no opts)', (t) => {
 });
 
 test.cb('registerand bootstrap', (t) => {
-  const server = new Hapi.Server();
+  const server = new hapi.Server();
   server.connection({ host: 'localhost' }); // will never be used
   server.register({
     register: require('../forest'),
