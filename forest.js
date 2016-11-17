@@ -151,9 +151,11 @@ module.exports = (server, opts, next) =>  {
     });
   }
 
+  server.expose('stubJoi', stubJoi);
+
   next();
 };
 
 module.exports.attributes = {
-  pkg: require('./package.json')
+  pkg: require('./package.json'),
 };
