@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 var schema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   owner: { type: mongoose.Schema.Types.Oid },
   likes: [ String ],
   dislikes: [ String ],

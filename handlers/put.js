@@ -1,6 +1,5 @@
 'use strict';
 
-const boom = require('boom');
 const joi = require('joi');
 const hu = require('../lib/handler-utils');
 
@@ -15,7 +14,7 @@ module.exports = (route, options) => {
       upsert: options.allowUpsert
     }, (err, mod) => {
 
-      if (err) return reply(boom.badImplementation(err));
+      if (err) return hu.handleError(err, reply);
       return reply(mod);
     });
   };
