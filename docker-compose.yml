@@ -6,3 +6,9 @@ services:
       - ./.test-data/mongo:/data/db
     ports:
       - "27017:27017"
+  # mongo-2:
+  #   image: mongo:2
+  #   volumes:
+  #     - ./.test-data/mongo2:/data/db
+  #   ports:
+  #     - "27017:27017"
