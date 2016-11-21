@@ -16,17 +16,26 @@ You can already play around with hapi-forest, but this is missing:
 * [ ] A lot more test coverage
 * [ ] More ways to customize the generated queries.
 
-## Plugin usage
+## Quickstart
 
+1. Install it
+```shell
+npm i --save hapi-forest # or yarn add hapi-forest if you prefer
+```
+
+2. Register the plugin.
 ```JavaScript
 // register hapi-forest
 server.register({
   register: require('hapi-forest'),
   options: {
+    // add your models here for auto route generation
     bootstrap: [ require('./models/user-model') ]
   }
 });
 ```
+
+3. Test your dynamically generated REST endpoints. [hapi-swagger](https://github.com/glennjones/hapi-swagger) works nicely with hapi-forest.
 
 Take a look at the `example` directory for a full example.
 
@@ -39,12 +48,14 @@ Take a look at the `example` directory for a full example.
 
 ## Handlers
 
-Handlers are dynamically generated based on your route definition.
+You can use the `forest` handler and define your own routes, instead of auto-generating
+them. This is useful if you need more control over your endpoints or want custom validation.
 
-`GET`, `POST`, `PATCH` & `PUT` routes will generate an according REST handler.
-You can also overwrite the handlers by setting the `type` option for every handler.
+The forest handler behaves differently based on your route definition.
+`GET`, `POST`, `PATCH` & `PUT` are supported.
 
-The `model` option is required for every handler.
+You can also overwrite the behaviour by setting the `type` option.
+The `model` option is always required.
 
 ### `getOne`
 
