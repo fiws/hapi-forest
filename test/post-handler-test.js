@@ -1,60 +1,48 @@
 const test = require('ava');
-const hapi = require('hapi');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('localhost');
+const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 
-test.beforeEach.cb(t => {
-  const server = new hapi.Server();
-  server.connection({ port: 9999 }); // never started
-  server.register({
-    register: require('../forest'),
-  }, e => {
-    t.true(e === undefined, 'no error');
-    server.route({
-      method: 'POST',
-      path: '/testCats1',
-      handler: {
-        forest: { model: CatModel }
-      },
-      config: {
-        validate: {
-          payload: server.plugins['hapi-forest'].stubJoi(CatModel),
-        }
+test.beforeEach(async t => {
+  await t.notThrows(t.notThrows(CatModel.remove({ fromTest: 'post' })));
+  const server = await createServer(t);
+  server.route({
+    method: 'POST',
+    path: '/testCats1',
+    handler: {
+      forest: { model: CatModel }
+    },
+    config: {
+      validate: {
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
       }
-    });
-    t.context.server = server;
-    t.context.send = (payload) => {
-      return server.inject({
-        method: 'POST',
-        url: '/testCats1',
-        payload,
-      })
-    };
-    t.end();
+    }
   });
+  t.pass();
 });
 
 test('respond with 400 for invalid payload', async t => {
-  const send = t.context.send;
-  const a = await send('');
+  const create = t.context.create;
+  const a = await create('');
   t.true(a.statusCode === 400, 'empty payload');
-  const b = await send({});
+  const b = await create({});
   t.true(b.statusCode === 400, 'empty object');
-  const c = await send({ wrong: 1 });
+  const c = await create({ wrong: 1 });
   t.true(c.statusCode === 400, 'wrong attributes');
-  const d = await send({ born: 'wrong type' });
+  const d = await create({ born: 'wrong type' });
   t.true(d.statusCode === 400, 'wrong type');
 
   t.pass();
 });
 
 test('create a new database entry', async t => {
-  const send = t.context.send;
-  const res = await send({
+  const create = t.context.create;
+  const res = await create({
     name: 'PostCat1',
+    fromTest: 'post',
   });
 
   t.is(res.statusCode, 201, 'Status code is 201');
@@ -66,16 +54,18 @@ test('create a new database entry', async t => {
 });
 
 test('do not allow duplicate entries', async t => {
-  const send = t.context.send;
-  const res = await send({
+  const create = t.context.create;
+  const res = await create({
     name: 'testCat2',
     meta: { age: 1 },
+    fromTest: 'post',
   });
   t.is(res.statusCode, 201, 'Status code is 201 for first POST');
 
-  const res2 = await send({
+  const res2 = await create({
     name: 'testCat2',
     meta: { age: 2 },
+    fromTest: 'post',
   });
   t.is(res2.statusCode, 409, 'Status code is 409 (conflict) for second POST');
   t.is(res2.result.message, 'Entry with that name already exists');
@@ -85,8 +75,4 @@ test('do not allow duplicate entries', async t => {
   t.is(dbEntry.name, 'testCat2', 'entry has right name');
   t.is(dbEntry.meta.age, 1, 'entry has right age');
   t.pass();
-});
-
-test.after.always(t => {
-  return t.notThrows(CatModel.remove({}));
 });

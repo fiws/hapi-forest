@@ -9,7 +9,8 @@ var schema = new mongoose.Schema({
   meta: {
     age: { type: Number },
     weight: { type: Number },
-  }
+  },
+  fromTest: String,
 }, {
   timestamps: true
 });

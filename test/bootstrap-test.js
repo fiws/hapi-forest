@@ -12,15 +12,14 @@ test.cb('register without errors (no opts)', (t) => {
 
 });
 
-test.cb('registerand bootstrap', (t) => {
+test.cb('register and bootstrap', (t) => {
   const server = new hapi.Server();
   server.connection({ host: 'localhost' }); // will never be used
   server.register({
     register: require('../forest'),
     options: {
       bootstrap: [
-        require('../example/models/cat-model'),
-        require('../example/models/user-model'),
+        require('./fixtures/test-cat-model'),
       ]
     }
   }, e => {
