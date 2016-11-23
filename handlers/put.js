@@ -8,11 +8,13 @@ module.exports = (route, options) => {
 
   return (req, reply) => {
 
-    const q = hu.getIdQuery(options, req);
+    const condition = hu.getIdQuery(options, req);
     req.payload[options.idKey] = hu.getId(options, req);
-    Model.update(q, req.payload, {
+    const query = Model.update(condition, req.payload, {
       upsert: options.allowUpsert
-    }, (err, mod) => {
+    });
+    if (options.preQuery) options.preSend(query); // query extension point
+    query.exec((err, mod) => {
 
       if (err) return hu.handleError(err, reply);
       return reply(mod);

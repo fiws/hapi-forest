@@ -7,10 +7,10 @@ module.exports = (route, options) => {
 
   return (req, reply) => {
 
-    Model.create(req.payload, (err, item) => {
+    const model = Model.create(req.payload);
+    if (options.preQuery) options.preSend(model); // query extension point
 
-      if (err) return hu.handleError(err, reply);
-      return reply(item).code(201);
-    });
+    model.then(item => reply(item).code(201))
+      .catch(err => hu.handleError(err, reply));
   };
 };

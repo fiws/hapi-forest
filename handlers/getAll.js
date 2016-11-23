@@ -10,10 +10,11 @@ module.exports = (route, options) => {
   return (req, reply) => {
 
     const filter = options.filterByQuery ? req.query : {};
-    const readQuery = Model.find(filter).lean();
-    if (options.select) readQuery.select(options.select);
+    const query = Model.find(filter).lean();
+    if (options.select) query.select(options.select);
+    if (options.preQuery) options.preSend(query); // query extension point
 
-    const readStream = readQuery.cursor().pipe(jsonStream.stringify());
+    const readStream = query.cursor().pipe(jsonStream.stringify());
     const stream2 = new stream.Readable().wrap(readStream);
 
     reply(stream2).type('application/json');

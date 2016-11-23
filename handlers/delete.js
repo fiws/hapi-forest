@@ -8,8 +8,9 @@ module.exports = (route, options) => {
 
   return (req, reply) => {
 
-    const q = hu.getIdQuery(options, req);
-    Model.remove(q, (err, mod) => {
+    const query = hu.getIdQuery(options, req);
+    if (options.preQuery) options.preSend(query); // query extension point
+    Model.remove(query, (err, mod) => {
 
       if (err) return reply(boom.badImplementation(err));
       return reply(mod);

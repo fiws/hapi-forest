@@ -8,6 +8,7 @@ module.exports = (server, opts, next) =>  {
 
   const defaultSchema = {
     model: joi.func().required(),
+    preQuery: joi.func().maxArity(1),
     type: joi.string().allow([
       'getOne', 'getAll', 'post', 'put', 'patch', 'delete'
     ]),
