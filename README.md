@@ -19,21 +19,21 @@ You can already play around with hapi-forest, but this is missing:
 ## Quickstart
 
 1. Install it
-```shell
-npm i --save hapi-forest # or yarn add hapi-forest if you prefer
-```
+  ```shell
+  npm i --save hapi-forest # or yarn add hapi-forest if you prefer
+  ```
 
 2. Register the plugin.
-```JavaScript
-// register hapi-forest
-server.register({
-  register: require('hapi-forest'),
-  options: {
-    // add your models here for auto route generation
-    bootstrap: [ require('./models/user-model') ]
-  }
-});
-```
+  ```JavaScript
+  // register hapi-forest
+  server.register({
+    register: require('hapi-forest'),
+    options: {
+      // add your models here for auto route generation
+      bootstrap: [ require('./models/user-model') ]
+    }
+  });
+  ```
 
 3. Test your dynamically generated REST endpoints. [hapi-swagger](https://github.com/glennjones/hapi-swagger) works nicely with hapi-forest.
 
