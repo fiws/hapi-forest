@@ -34,6 +34,7 @@
   "dependencies": {
     "JSONStream": "^1.1.4",
     "boom": "^4.0.0",
+    "call": "^3.0.3",
     "joi": "^9.0.4",
     "lodash": "^4.15.0"
   },

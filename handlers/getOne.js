@@ -10,8 +10,10 @@ module.exports = (route, options) => {
   return (req, reply) => {
 
     const q = hu.getIdQuery(options, req);
-    const query = Model.findOne(q);
+    const query = Model.findOne(q).lean();
     if (options.select) query.select(options.select);
+    if (options.preQuery) options.preSend(query); // query extension point
+
     query.exec((err, mod) => {
 
       if (err) return reply(boom.badImplementation(err));

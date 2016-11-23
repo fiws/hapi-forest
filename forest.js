@@ -3,6 +3,8 @@
 const joi = require('joi');
 const hoek = require('hoek');
 const stubJoi = require('./lib/stub-joi');
+const call = new require('call');
+const router = new call.Router();
 
 module.exports = (server, opts, next) =>  {
 
@@ -27,6 +29,13 @@ module.exports = (server, opts, next) =>  {
   server.handler('forest', (route, options) => {
     let handler = null;
 
+    const analyzed = router.analyze(route.path);
+    // set idKey to first param if not set
+    if (analyzed.params[0] && options.idKey === undefined) {
+      if (analyzed.params[0] === 'id') options.idKey = '_id';
+      else options.idKey = analyzed.params[0];
+    }
+
     if (route.method === 'get') {
       if (/.*\/\?$/.test(route.fingerprint) === true) {
         handler = handlers.getOne;
@@ -39,6 +48,7 @@ module.exports = (server, opts, next) =>  {
     } else {
       throw new Error('no handler for method');
     }
+
     const oSchema = hoek.applyToDefaults(defaultSchema, handler.validOptions || {});
     options = joi.attempt(options, oSchema, 'invalid options');
     return handler(route, options);

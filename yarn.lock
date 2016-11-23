@@ -1008,6 +1008,13 @@ caching-transform@^1.0.0:
     mkdirp "^0.5.1"
     write-file-atomic "^1.1.4"
 
+call, call@3.x.x:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/call/-/call-3.0.3.tgz#e4748ddbbb7f41ae40cee055f8b270b733bf7c8d"
+  dependencies:
+    boom "3.x.x"
+    hoek "4.x.x"
+
 call-matcher@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/call-matcher/-/call-matcher-1.0.0.tgz#eafa31036dbfaa9c0d1716f12ddacfd9c69ef22f"
@@ -1024,13 +1031,6 @@ call-me-maybe@^1.0.1:
 call-signature@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/call-signature/-/call-signature-0.0.2.tgz#a84abc825a55ef4cb2b028bd74e205a65b9a4996"
-
-call@3.x.x:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/call/-/call-3.0.3.tgz#e4748ddbbb7f41ae40cee055f8b270b733bf7c8d"
-  dependencies:
-    boom "3.x.x"
-    hoek "4.x.x"
 
 caller-path@^0.1.0:
   version "0.1.0"
