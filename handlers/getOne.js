@@ -17,6 +17,7 @@ module.exports = (route, options) => {
     query.exec((err, mod) => {
 
       if (err) return reply(boom.badImplementation(err));
+      if (mod === null) return reply(boom.notFound(`${Model.modelName} not found`));
       return reply(mod);
     });
   };
