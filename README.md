@@ -12,7 +12,7 @@ Provides REST handlers for mongoose models. Can also generate ready to use
 routes, for fast bootstrapping.
 
 You can already play around with hapi-forest, but this is missing:
-* [ ] RESTfull `PUT` route
+* [x] RESTfull `PUT` route
 * [ ] A lot more test coverage
 * [x] More ways to customize the generated queries.
 

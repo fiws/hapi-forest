@@ -25,6 +25,14 @@ module.exports = (t) => {
         });
       };
 
+      t.context.put = (id, payload) => {
+        return server.inject({
+          method: 'PUT',
+          url: `/testCats1/${id}`,
+          payload,
+        });
+      };
+
       resolve(server);
     });
   });

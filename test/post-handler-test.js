@@ -28,8 +28,8 @@ test('respond with 400 for invalid payload', async t => {
   const create = t.context.create;
   const a = await create('');
   t.true(a.statusCode === 400, 'empty payload');
-  const b = await create({});
-  t.true(b.statusCode === 400, 'empty object');
+  // const b = await create({});
+  // t.true(b.statusCode === 400, 'empty object');
   const c = await create({ wrong: 1 });
   t.true(c.statusCode === 400, 'wrong attributes');
   const d = await create({ born: 'wrong type' });

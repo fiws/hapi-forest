@@ -10,19 +10,24 @@ module.exports = (route, options) => {
 
     const condition = hu.getIdQuery(options, req);
     req.payload[options.idKey] = hu.getId(options, req);
+
     const query = Model.update(condition, req.payload, {
-      upsert: options.allowUpsert
+      overwrite: options.overwrite,
+      upsert: options.upsert,
     });
+
     if (options.preQuery) options.preSend(query); // query extension point
-    query.exec((err, mod) => {
+    query.exec((err, res) => {
 
       if (err) return hu.handleError(err, reply);
-      return reply(mod);
+      if (res.upserted !== undefined) reply(req.payload).code(201); // create
+      else reply(req.payload); // update
     });
   };
 };
 
 module.exports.validOptions = {
-  allowUpsert: joi.boolean().default(true),
+  overwrite: joi.boolean().default(true), // "true" PUT by default – overwrite doc
+  upsert: joi.boolean().default(true),
   idKey: hu.schemas.idKey,
 };

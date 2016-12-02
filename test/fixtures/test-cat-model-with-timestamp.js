@@ -12,7 +12,7 @@ var schema = new mongoose.Schema({
   },
   fromTest: String,
 }, {
-  timestamps: false
+  timestamps: true
 });
 
-module.exports = mongoose.model('TestCat', schema);
+module.exports = mongoose.model('TestCatTimestamp', schema);

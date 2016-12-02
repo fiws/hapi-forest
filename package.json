@@ -1,6 +1,6 @@
 {
   "name": "hapi-forest",
-  "version": "0.3.0",
+  "version": "0.4.0-dev",
   "description": "A hapi plugin to generate routes based on mongoose models",
   "main": "forest.js",
   "scripts": {
@@ -38,6 +38,9 @@
     "joi": "^9.0.4",
     "lodash": "^4.15.0"
   },
+  "peerDependencies": {
+    "mongoose": "^4.7.2"
+  },
   "devDependencies": {
     "ava": "^0.17.0",
     "blipp": "^2.3.0",
@@ -47,7 +50,7 @@
     "hapi-swagger": "^7.2.0",
     "inert": "^4.0.2",
     "lint-staged": "^3.0.1",
-    "mongoose": "^4.6.0",
+    "mongoose": "github:Automattic/mongoose#904a4d793",
     "nyc": "^9.0.1",
     "pre-commit": "^1.1.3",
     "vision": "^4.1.0"
