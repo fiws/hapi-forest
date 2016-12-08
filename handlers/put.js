@@ -16,7 +16,7 @@ module.exports = (route, options) => {
       upsert: options.upsert,
     });
 
-    if (options.preQuery) options.preSend(query); // query extension point
+    if (options.preQuery) options.preQuery(query); // query extension point
     query.exec((err, res) => {
 
       if (err) return hu.handleError(err, reply);

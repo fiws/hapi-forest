@@ -12,7 +12,7 @@ module.exports = (route, options) => {
     const filter = options.filterByQuery ? req.query : {};
     const query = Model.find(filter).lean();
     if (options.select) query.select(options.select);
-    if (options.preQuery) options.preSend(query); // query extension point
+    if (options.preQuery) options.preQuery(query); // query extension point
 
     const readStream = query.cursor().pipe(jsonStream.stringify());
     const stream2 = new stream.Readable().wrap(readStream);

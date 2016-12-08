@@ -12,7 +12,7 @@ module.exports = (route, options) => {
     const q = hu.getIdQuery(options, req);
     const query = Model.findOne(q).lean();
     if (options.select) query.select(options.select);
-    if (options.preQuery) options.preSend(query); // query extension point
+    if (options.preQuery) options.preQuery(query); // query extension point
 
     query.exec((err, mod) => {
 
