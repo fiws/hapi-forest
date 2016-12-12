@@ -18,6 +18,13 @@ module.exports = (t) => {
         })
       };
 
+      t.context.getAll = () => {
+        return server.inject({
+          method: 'GET',
+          url: '/testCats1',
+        });
+      };
+
       t.context.getOne = (id) => {
         return server.inject({
           method: 'GET',
