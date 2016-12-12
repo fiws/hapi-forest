@@ -10,7 +10,7 @@ module.exports = (route, options) => {
 
     const query = hu.getIdQuery(options, req);
     if (options.preQuery) options.preQuery(query); // query extension point
-    Model.findOneAndRemove(query, (err, mod) => {
+    Model.findOneAndRemove(query).lean().exec((err, mod) => {
 
       if (err) return reply(boom.badImplementation(err));
       return reply(mod);

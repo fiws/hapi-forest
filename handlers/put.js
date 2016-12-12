@@ -14,7 +14,7 @@ module.exports = (route, options) => {
     const query = Model.update(condition, req.payload, {
       overwrite: options.overwrite,
       upsert: options.upsert,
-    });
+    }).lean();
 
     if (options.preQuery) options.preQuery(query); // query extension point
     query.exec((err, res) => {
