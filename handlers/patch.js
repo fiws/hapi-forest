@@ -10,9 +10,10 @@ module.exports = (route, options) => {
 
     const query = hu.getIdQuery(options, req);
     if (options.preQuery) options.preQuery(query); // query extension point
-    Model.update(query, req.payload, (err, mod) => {
+    Model.findOneAndUpdate(query, req.payload, (err, mod) => {
 
       if (err) return reply(boom.badImplementation(err));
+      if (mod === null) return reply(boom.notFound(`${Model.modelName} not found`));
       return reply(mod);
     });
   };

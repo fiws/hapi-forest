@@ -33,6 +33,14 @@ module.exports = (t) => {
         });
       };
 
+      t.context.patch = (id, payload) => {
+        return server.inject({
+          method: 'PATCH',
+          url: `/testCats1/${id}`,
+          payload,
+        });
+      };
+
       resolve(server);
     });
   });
