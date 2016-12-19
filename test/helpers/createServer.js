@@ -18,10 +18,10 @@ module.exports = (t) => {
         })
       };
 
-      t.context.getAll = () => {
+      t.context.getAll = (q = '') => {
         return server.inject({
           method: 'GET',
-          url: '/testCats1',
+          url: `/testCats1${q}`,
         });
       };
 
