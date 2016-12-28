@@ -98,10 +98,10 @@ Returns all documents from the specified `model`. The result will be streamed.
 * Only custom fields can be selected using `select`.
 * The `filterByQuery` option allows basic filtering of the results by sending a
 query with the request. (`?group=nodejs&role=developer`)
-  * the query that results from that can be modified by the `transformQuery` option.
+  * the query that results from the user input can be modified with the `transformQuery` option.
   You can specify a function that has to return the updated query.
 * The `allowLimit` option gives the client the ability to limit the number of results by
-sending `$limit=x` in the query.
+adding `$limit=x` to the query parameters.
 
 ```JavaScript
 server.route({
