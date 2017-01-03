@@ -35,6 +35,7 @@ test('update existing db entry', async t => {
 
   const res = await patch('PatchCat1', { likes: ['patch'], fromTest: 'patch' });
   t.is(res.statusCode, 200, 'Status code is 200');
+  t.deepEqual(res.result.likes, ['patch'], 'Response payload includes change');
 
   const dbEntry = await CatModel.findOne({ name: 'PatchCat1' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
