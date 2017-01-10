@@ -10,7 +10,10 @@ module.exports = (route, options) => {
     const model = Model.create(req.payload);
     if (options.preQuery) options.preQuery(model); // query extension point
 
-    model.then(item => reply(item).code(201))
+    model.then(item => {
+      if (options.transformResponse) item = options.transformResponse(item);
+      return reply(item).code(201);
+    })
       .catch(err => hu.handleError(err, reply));
   };
 };

@@ -20,8 +20,12 @@ module.exports = (route, options) => {
     query.exec((err, res) => {
 
       if (err) return hu.handleError(err, reply);
-      if (res.upserted !== undefined) reply(req.payload).code(201); // create
-      else reply(req.payload); // update
+      Model.findOne(condition).lean().exec((err, item) => {
+
+        if (options.transformResponse) item = options.transformResponse(item);
+        if (res.upserted !== undefined) reply(item).code(201); // create
+        else reply(item); // update
+      })
     });
   };
 };

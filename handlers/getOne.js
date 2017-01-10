@@ -14,11 +14,12 @@ module.exports = (route, options) => {
     if (options.select) query.select(options.select);
     if (options.preQuery) options.preQuery(query); // query extension point
 
-    query.exec((err, mod) => {
+    query.exec((err, item) => {
 
       if (err) return reply(boom.badImplementation(err));
-      if (mod === null) return reply(boom.notFound(`${Model.modelName} not found`));
-      return reply(mod);
+      if (item === null) return reply(boom.notFound(`${Model.modelName} not found`));
+      if (options.transformResponse) item = options.transformResponse(item);
+      return reply(item);
     });
   };
 };

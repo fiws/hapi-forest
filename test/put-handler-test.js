@@ -87,6 +87,7 @@ test('update an existing database entry', async t => {
     likes: [ 'yarn' ]
   });
   t.is(res.statusCode, 201, 'Status code is 201');
+  t.is(res.result.meta.age, 2, 'returns right data');
 
   const dbEntry = await CatModel.findOne({ name: 'PutCat2' }).lean();
   t.true(dbEntry !== null, 'db entry exists');

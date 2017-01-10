@@ -28,7 +28,9 @@ module.exports = (route, options) => {
     if (options.select) query.select(options.select);
     if (options.preQuery) options.preQuery(query); // query extension point
 
-    const readStream = query.where(filter).lean().cursor().pipe(jsonStream.stringify());
+    const readStream = query.where(filter).lean().cursor({
+      transform: options.transformResponse,
+    }).pipe(jsonStream.stringify());
     const stream2 = new stream.Readable().wrap(readStream);
 
     reply(stream2).type('application/json');
