@@ -122,6 +122,8 @@ server.route({
 
 Creates a new document.
 
+* `skipMongooseHooks` will use a faster mongoose create implementation, skipping all hooks.
+
 ```JavaScript
 server.route({
   method: 'POST',
