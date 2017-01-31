@@ -13,7 +13,7 @@ module.exports = (route, options) => {
     Model.findOneAndRemove(query).lean().exec((err, item) => {
 
       if (err) return reply(boom.badImplementation(err));
-      if (options.transformResponse) item = options.transformResponse(item);
+      if (options.transformResponse) item = options.transformResponse(item, req, reply);
       return reply(item);
     });
   };

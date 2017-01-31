@@ -22,7 +22,7 @@ module.exports = (route, options) => {
       if (err) return hu.handleError(err, reply);
       Model.findOne(condition).lean().exec((err, item) => {
 
-        if (options.transformResponse) item = options.transformResponse(item);
+        if (options.transformResponse) item = options.transformResponse(item, req, reply);
         if (res.upserted !== undefined) reply(item).code(201); // create
         else reply(item); // update
       })

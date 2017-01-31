@@ -15,7 +15,7 @@ module.exports = (route, options) => {
 
     model.then(item => {
       if (options.skipMongooseHooks) item = item[0];
-      if (options.transformResponse) item = options.transformResponse(item);
+      if (options.transformResponse) item = options.transformResponse(item, req, reply);
       return reply(item).code(201);
     })
       .catch(err => hu.handleError(err, reply));

@@ -18,7 +18,7 @@ module.exports = (route, options) => {
 
       if (err) return reply(boom.badImplementation(err));
       if (item === null) return reply(boom.notFound(`${Model.modelName} not found`));
-      if (options.transformResponse) item = options.transformResponse(item);
+      if (options.transformResponse) item = options.transformResponse(item, req, reply);
       return reply(item);
     });
   };
