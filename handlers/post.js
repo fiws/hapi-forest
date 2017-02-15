@@ -16,7 +16,8 @@ module.exports = (route, options) => {
     model.then(item => {
       if (options.skipMongooseHooks) item = item[0];
       if (options.transformResponse) item = options.transformResponse(item, req, reply);
-      return reply(item).code(201);
+      reply(item).code(201);
+      if (options.afterResponse) item = options.afterResponse(item, req);
     })
       .catch(err => hu.handleError(err, reply));
   };
@@ -24,4 +25,5 @@ module.exports = (route, options) => {
 
 module.exports.validOptions = {
   skipMongooseHooks: joi.boolean().default(false),
+  afterResponse: joi.func().maxArity(2),
 };

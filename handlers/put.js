@@ -25,6 +25,7 @@ module.exports = (route, options) => {
         if (options.transformResponse) item = options.transformResponse(item, req, reply);
         if (res.upserted !== undefined) reply(item).code(201); // create
         else reply(item); // update
+        if (options.afterResponse) item = options.afterResponse(item, req);
       })
     });
   };
@@ -33,5 +34,6 @@ module.exports = (route, options) => {
 module.exports.validOptions = {
   overwrite: joi.boolean().default(true), // "true" PUT by default – overwrite doc
   upsert: joi.boolean().default(true),
+  afterResponse: joi.func().maxArity(2),
   idKey: hu.schemas.idKey,
 };

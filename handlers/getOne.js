@@ -19,7 +19,8 @@ module.exports = (route, options) => {
       if (err) return reply(boom.badImplementation(err));
       if (item === null) return reply(boom.notFound(`${Model.modelName} not found`));
       if (options.transformResponse) item = options.transformResponse(item, req, reply);
-      return reply(item);
+      reply(item);
+      if (options.afterResponse) item = options.afterResponse(item, req);
     });
   };
 };
@@ -27,4 +28,5 @@ module.exports = (route, options) => {
 module.exports.validOptions = {
   idKey: hu.schemas.idKey,
   select: joi.string(),
+  afterResponse: joi.func().maxArity(2),
 };

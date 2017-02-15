@@ -1,6 +1,7 @@
 'use strict';
 
 const boom = require('boom');
+const joi = require('joi');
 const hu = require('../lib/handler-utils');
 
 module.exports = (route, options) => {
@@ -14,11 +15,13 @@ module.exports = (route, options) => {
 
       if (err) return reply(boom.badImplementation(err));
       if (options.transformResponse) item = options.transformResponse(item, req, reply);
-      return reply(item);
+      reply(item);
+      if (options.afterResponse) item = options.afterResponse(item, req);
     });
   };
 };
 
 module.exports.validOptions = {
   idKey: hu.schemas.idKey,
+  afterResponse: joi.func().maxArity(2),
 };
