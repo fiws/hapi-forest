@@ -14,6 +14,7 @@ module.exports = (route, options) => {
     Model.findOneAndRemove(query).lean().exec((err, item) => {
 
       if (err) return reply(boom.badImplementation(err));
+      if (item === null) return reply(boom.notFound(`${Model.modelName} not found`));
       if (options.transformResponse) item = options.transformResponse(item, req, reply);
       reply(item);
       if (options.afterResponse) item = options.afterResponse(item, req);
