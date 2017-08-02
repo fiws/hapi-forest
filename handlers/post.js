@@ -8,10 +8,11 @@ module.exports = (route, options) => {
 
   return (req, reply) => {
 
+    if (options.preQuery) options.preQuery(req.payload); // query extension point
+
     const model = options.skipMongooseHooks ?
       Model.insertMany([req.payload]) :
       Model.create(req.payload);
-    if (options.preQuery) options.preQuery(model); // query extension point
 
     model.then(item => {
       if (options.skipMongooseHooks) item = item[0];
