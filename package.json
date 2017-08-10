@@ -33,17 +33,19 @@
   "license": "MIT",
   "dependencies": {
     "JSONStream": "^1.1.4",
-    "boom": "^4.0.0",
-    "call": "^4.0.0",
     "joi": "^10.0.2",
     "lodash": "^4.15.0"
   },
   "peerDependencies": {
+    "boom": "*",
+    "call": "*",
     "mongoose": "^4.7.2"
   },
   "devDependencies": {
     "ava": "^0.17.0",
     "blipp": "^2.3.0",
+    "boom": "^5.2.0",
+    "call": "^4.0.2",
     "eslint": "^3.5.0",
     "eslint-plugin-ava": "^4.0.0",
     "hapi": "^16.0.1",
