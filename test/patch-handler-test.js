@@ -26,7 +26,7 @@ test('update existing db entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -53,7 +53,7 @@ test('fail to update non existent entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });

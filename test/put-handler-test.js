@@ -24,7 +24,7 @@ test('create a new database entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -48,7 +48,7 @@ test('create a new database entry from model with timestamps', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -72,7 +72,7 @@ test('update an existing database entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });

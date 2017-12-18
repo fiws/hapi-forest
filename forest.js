@@ -65,6 +65,7 @@ module.exports.register = (server, opts) =>  {
 
       // generate joi model to get you started
       const stubJoiSchema = stubJoi(Model);
+      const stubJoiSchemaUnrequired = stubJoi(Model, true);
       const paramIdSchema = {
         id: joi.string().hex().length(24)
       };
@@ -79,7 +80,7 @@ module.exports.register = (server, opts) =>  {
           tags: ['api'],
           description: `Gets all ${collectionName}`,
           validate: {
-            query: stubJoiSchema,
+            query: stubJoiSchemaUnrequired,
           }
         }
       });
@@ -125,7 +126,7 @@ module.exports.register = (server, opts) =>  {
           description: `Update existing ${modelName}`,
           validate: {
             params: paramIdSchema,
-            payload: stubJoiSchema,
+            payload: stubJoiSchemaUnrequired,
           }
         }
       });
