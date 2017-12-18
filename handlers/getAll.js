@@ -8,7 +8,7 @@ const jsonStream = require('JSONStream');
 module.exports = (route, options) => {
   const Model = options.model;
 
-  return (req, reply) => {
+  return req => {
 
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
@@ -29,14 +29,14 @@ module.exports = (route, options) => {
     if (options.preQuery) options.preQuery(query); // query extension point
 
     const transform = options.transformResponse ?
-      poly => options.transformResponse(poly, req, reply) : undefined;
+      poly => options.transformResponse(poly, req) : undefined;
 
     const readStream = query.where(filter).lean().cursor({
       transform,
     }).pipe(jsonStream.stringify());
     const stream2 = new stream.Readable().wrap(readStream);
 
-    reply(stream2).type('application/json');
+    return stream2; //.type('application/json');
   };
 };
 
