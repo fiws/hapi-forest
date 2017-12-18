@@ -2,13 +2,13 @@ const test = require('ava');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('localhost');
+mongoose.connect('mongodb://localhost/forest-test', { useMongoClient: true });
 const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 
 let testId;
 // cleanup previous test runs
-test.before(async t => {
+test.before(async () => {
   await CatModel.remove({ fromTest: 'getOne' });
 
   const res = await CatModel.create({
@@ -16,7 +16,6 @@ test.before(async t => {
     fromTest: 'getOne',
   });
   testId = res._id.toString();
-  t.pass();
 });
 
 test.beforeEach(async t => {

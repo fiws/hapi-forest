@@ -2,7 +2,7 @@ const test = require('ava');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('localhost');
+mongoose.connect('mongodb://localhost/forest-test', { useMongoClient: true });
 const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 
@@ -21,7 +21,6 @@ test.beforeEach(async t => {
       }
     }
   });
-  t.pass();
 });
 
 test('respond with 400 for invalid payload', async t => {
@@ -34,8 +33,6 @@ test('respond with 400 for invalid payload', async t => {
   t.true(c.statusCode === 400, 'wrong attributes');
   const d = await create({ born: 'wrong type' });
   t.true(d.statusCode === 400, 'wrong type');
-
-  t.pass();
 });
 
 test('create a new database entry', async t => {
@@ -50,7 +47,6 @@ test('create a new database entry', async t => {
   const dbEntry = await CatModel.findOne({ name: 'PostCat1' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
   t.is(dbEntry.name, 'PostCat1', 'entry has right name');
-  t.pass();
 });
 
 test('do not allow duplicate entries', async t => {
@@ -74,5 +70,4 @@ test('do not allow duplicate entries', async t => {
   t.true(dbEntry !== null, 'db entry exists');
   t.is(dbEntry.name, 'testCat2', 'entry has right name');
   t.is(dbEntry.meta.age, 1, 'entry has right age');
-  t.pass();
 });

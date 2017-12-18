@@ -2,7 +2,7 @@ const test = require('ava');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('localhost');
+mongoose.connect('mongodb://localhost/forest-test', { useMongoClient: true });
 const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 
@@ -14,7 +14,6 @@ test.beforeEach(async t => {
 test('getAll', async t => {
   const server = t.context.server;
   const getAll = t.context.getAll;
-
   server.route({
     method: 'GET',
     path: '/testCats1',

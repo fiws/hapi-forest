@@ -1,31 +1,21 @@
 const test = require('ava');
 const hapi = require('hapi');
 
-test.cb('register without errors (no opts)', (t) => {
+test('register without errors (no opts)', async t => {
   const server = new hapi.Server();
-  server.register({
-    register: require('../forest')
-  }, e => {
-    t.true(e === undefined, 'no error');
-    t.end();
-  });
-
+  await t.notThrows(server.register(require('../forest')));
 });
 
-test.cb('register and bootstrap', (t) => {
-  const server = new hapi.Server();
-  server.connection({ host: 'localhost' }); // will never be used
-  server.register({
-    register: require('../forest'),
+test('register and bootstrap', async t => {
+  const server = new hapi.Server({ host: 'localhost' }); // will never be used
+  const register = server.register({
+    plugin: require('../forest'),
     options: {
       bootstrap: [
         require('./fixtures/test-cat-model'),
       ]
     }
-  }, e => {
-    // TODO: check for routes
-    t.true(e === undefined, 'no error');
-    t.end();
   });
-
+  await t.notThrows(register);
+  // TODO: check for routes
 });
