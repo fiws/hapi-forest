@@ -1,42 +1,26 @@
 'use strict';
 
-const Hapi = require('hapi');
-
-const server = new Hapi.Server();
-
+require('make-promises-safe');
+const hapi = require('hapi');
 const mongoose = require('mongoose');
-server.app.db = mongoose.connect('localhost');
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/forest-example', { useMongoClient: true });
 
-server.connection({ port: 8080 });
+const server = new hapi.server({ port: 8080 });
 
 const plugins = [
   {
-    register: require('../forest'),
+    plugin: require('../forest'),
     options: {
-      bootstrap: [ require('./models/cat-model'), require('./models/user-model') ]
+      bootstrap: [ require('./models/cat-model') ] //, require('./models/user-model') ]
     }
   },
-  // hapi-forest works great with hapi-swagger, but it is not required
-  require('vision'),
-  require('inert'), {
-    register: require('hapi-swagger'),
-    options: {
-      info: {
-        title: 'hapi-forest test API',
-        version: '1.0.0'
-      }
-    }
-  }
+  // TODO: require('vision'), require('inert'), require('hapi-swagger'),
+  require('blipp'),
 ];
 
-server.register(plugins, e => {
-  if (e) console.error(e);
-  else console.log('Bootstraped all model routes');
-});
-
-server.register(require('blipp'));
-
-server.start((err) => {
-  if (err) throw err;
-  console.log(`example server started @ ${server.info.uri}`);
-});
+server.register(plugins)
+  .catch(console.error)
+  .then(() => console.log('Bootstraped all model routes'))
+  .then(() => server.start())
+  .then(() => console.log(`example server started @ ${server.info.uri}`));
