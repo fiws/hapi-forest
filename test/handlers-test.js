@@ -3,16 +3,11 @@ const hapi = require('hapi');
 
 const CatModel = require('./fixtures/test-cat-model');
 
-test.beforeEach.cb(t => {
-  const server = new hapi.Server();
-  server.connection({ port: 9999 }); // never started
-  server.register({
-    register: require('../forest'),
-  }, e => {
-    t.true(e === undefined, 'no error');
-    t.context.server = server;
-    t.end();
-  });
+test.beforeEach(async t => {
+  const server = new hapi.Server({ port: 9999 }); // never started
+  const register = server.register(require('../forest'));
+  await t.notThrows(register);
+  t.context.server = server;
 });
 
 
@@ -65,9 +60,6 @@ test('register a getOne handler', t => {
       forest: { model: CatModel }
     }
   });
-
-  t.pass();
-
 });
 
 test('register a getAll handler', t => {
@@ -79,9 +71,6 @@ test('register a getAll handler', t => {
       forest: { model: CatModel }
     }
   });
-
-  t.pass();
-
 });
 
 test('register a post handler', t => {
@@ -93,9 +82,6 @@ test('register a post handler', t => {
       forest: { model: CatModel }
     }
   });
-
-  t.pass();
-
 });
 
 test('register a patch handler', t => {
@@ -107,9 +93,6 @@ test('register a patch handler', t => {
       forest: { model: CatModel }
     }
   });
-
-  t.pass();
-
 });
 
 test('register a put handler', t => {
@@ -121,7 +104,4 @@ test('register a put handler', t => {
       forest: { model: CatModel }
     }
   });
-
-  t.pass();
-
 });

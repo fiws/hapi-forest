@@ -6,7 +6,7 @@ const joi = require('joi');
 module.exports = (route, options) => {
   const Model = options.model;
 
-  return (req, reply) => {
+  return async (req, h) => {
 
     if (options.preQuery) options.preQuery(req.payload); // query extension point
 
@@ -14,13 +14,11 @@ module.exports = (route, options) => {
       Model.insertMany([req.payload]) :
       Model.create(req.payload);
 
-    model.then(item => {
-      if (options.skipMongooseHooks) item = item[0];
-      if (options.transformResponse) item = options.transformResponse(item, req, reply);
-      reply(item).code(201);
-      if (options.afterResponse) item = options.afterResponse(item, req);
-    })
-      .catch(err => hu.handleError(err, reply));
+    let item = await model.catch(hu.handleError);
+    if (options.skipMongooseHooks) item = item[0];
+    if (options.transformResponse) item = options.transformResponse(item, req);
+    if (options.afterResponse) process.nextTick(() => options.afterResponse(item, req));
+    return h.response(item).code(201);
   };
 };
 

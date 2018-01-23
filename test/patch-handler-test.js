@@ -2,8 +2,7 @@ const test = require('ava');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-
-mongoose.connect('localhost');
+mongoose.connect('mongodb://localhost/forest-test', { useMongoClient: true });
 const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 const CatModelTimestamps = require('./fixtures/test-cat-model-with-timestamp.js');
@@ -12,7 +11,6 @@ test.beforeEach(async t => {
   await t.notThrows(CatModel.remove({ fromTest: 'patch' }));
   await t.notThrows(CatModelTimestamps.remove({ fromTest: 'patch' }));
   await createServer(t);
-  t.pass();
 });
 
 test('update existing db entry', async t => {
@@ -28,7 +26,7 @@ test('update existing db entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -41,7 +39,6 @@ test('update existing db entry', async t => {
   t.true(dbEntry !== null, 'db entry exists');
   t.is(dbEntry.name, 'PatchCat1', 'entry has right name');
   t.is(dbEntry.likes[0], 'patch', 'entry was updates');
-  t.pass();
 });
 
 test('fail to update non existent entry', async t => {
@@ -56,7 +53,7 @@ test('fail to update non existent entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -66,5 +63,4 @@ test('fail to update non existent entry', async t => {
 
   const dbEntry = await CatModel.findOne({ name: 'NoPatchCat1' }).lean();
   t.true(dbEntry === null, 'db entry does not exists');
-  t.pass();
 });

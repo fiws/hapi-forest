@@ -2,8 +2,7 @@ const test = require('ava');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-
-mongoose.connect('localhost');
+mongoose.connect('mongodb://localhost/forest-test', { useMongoClient: true });
 const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 const CatModelTimestamps = require('./fixtures/test-cat-model-with-timestamp.js');
@@ -12,7 +11,6 @@ test.beforeEach(async t => {
   await t.notThrows(CatModel.remove({ fromTest: 'put' }));
   await t.notThrows(CatModelTimestamps.remove({ fromTest: 'put' }));
   await createServer(t);
-  t.pass();
 });
 
 test('create a new database entry', async t => {
@@ -26,7 +24,7 @@ test('create a new database entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -37,7 +35,6 @@ test('create a new database entry', async t => {
   const dbEntry = await CatModel.findOne({ name: 'PutCat1' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
   t.is(dbEntry.name, 'PutCat1', 'entry has right name');
-  t.pass();
 });
 
 test('create a new database entry from model with timestamps', async t => {
@@ -51,7 +48,7 @@ test('create a new database entry from model with timestamps', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -62,7 +59,6 @@ test('create a new database entry from model with timestamps', async t => {
   const dbEntry = await CatModelTimestamps.findOne({ name: 'PutCatTimestamp' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
   t.is(dbEntry.name, 'PutCatTimestamp', 'entry has right name');
-  t.pass();
 });
 
 test('update an existing database entry', async t => {
@@ -76,7 +72,7 @@ test('update an existing database entry', async t => {
     },
     config: {
       validate: {
-        payload: server.plugins['hapi-forest'].stubJoi(CatModel),
+        payload: server.plugins['hapi-forest'].stubJoi(CatModel, true),
       }
     }
   });
@@ -102,7 +98,5 @@ test('update an existing database entry', async t => {
   t.true(updatedDbEntry !== null, 'db entry exists');
   t.is(updatedDbEntry.name, 'PutCat2', 'entry has the same name');
   t.is(updatedDbEntry.meta.age, 1, 'entry the updated age');
-  t.is(updatedDbEntry.likes, undefined, 'document was overwritten');
-
-  t.pass();
+  t.falsy(updatedDbEntry.likes && updatedDbEntry.likes.length, 'document was overwritten');
 });

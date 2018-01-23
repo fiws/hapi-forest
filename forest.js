@@ -6,12 +6,12 @@ const stubJoi = require('./lib/stub-joi');
 const call = new require('call');
 const router = new call.Router();
 
-module.exports = (server, opts, next) =>  {
+module.exports.register = (server, opts) =>  {
 
   const defaultSchema = {
     model: joi.func().required(),
     preQuery: joi.func().maxArity(1),
-    transformResponse: joi.func().maxArity(3),
+    transformResponse: joi.func().maxArity(2),
     type: joi.string().allow([
       'getOne', 'getAll', 'post', 'put', 'patch', 'delete'
     ]),
@@ -27,7 +27,7 @@ module.exports = (server, opts, next) =>  {
     delete: require('./handlers/delete'),
   };
 
-  server.handler('forest', (route, options) => {
+  server.decorate('handler', 'forest', (route, options) => {
     let handler = null;
 
     const analyzed = router.analyze(route.path);
@@ -64,6 +64,7 @@ module.exports = (server, opts, next) =>  {
 
       // generate joi model to get you started
       const stubJoiSchema = stubJoi(Model);
+      const stubJoiSchemaUnrequired = stubJoi(Model, true);
       const paramIdSchema = {
         id: joi.string().hex().length(24)
       };
@@ -78,7 +79,7 @@ module.exports = (server, opts, next) =>  {
           tags: ['api'],
           description: `Gets all ${collectionName}`,
           validate: {
-            query: stubJoiSchema,
+            query: stubJoiSchemaUnrequired,
           }
         }
       });
@@ -124,7 +125,7 @@ module.exports = (server, opts, next) =>  {
           description: `Update existing ${modelName}`,
           validate: {
             params: paramIdSchema,
-            payload: stubJoiSchema,
+            payload: stubJoiSchemaUnrequired,
           }
         }
       });
@@ -164,10 +165,6 @@ module.exports = (server, opts, next) =>  {
   }
 
   server.expose('stubJoi', stubJoi);
-
-  next();
 };
 
-module.exports.attributes = {
-  pkg: require('./package.json'),
-};
+module.exports.pkg = require('./package.json');

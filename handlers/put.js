@@ -6,7 +6,7 @@ const hu = require('../lib/handler-utils');
 module.exports = (route, options) => {
   const Model = options.model;
 
-  return (req, reply) => {
+  return async (req, h) => {
 
     const condition = hu.getIdQuery(options, req);
     req.payload[options.idKey] = hu.getId(options, req);
@@ -17,17 +17,13 @@ module.exports = (route, options) => {
     }).lean();
 
     if (options.preQuery) options.preQuery(query); // query extension point
-    query.exec((err, res) => {
+    let res = await query.exec().catch(hu.handleError);
+    let item = await Model.findOne(condition).lean().exec();
 
-      if (err) return hu.handleError(err, reply);
-      Model.findOne(condition).lean().exec((err, item) => {
-
-        if (options.transformResponse) item = options.transformResponse(item, req, reply);
-        if (res.upserted !== undefined) reply(item).code(201); // create
-        else reply(item); // update
-        if (options.afterResponse) item = options.afterResponse(item, req);
-      })
-    });
+    if (options.transformResponse) item = options.transformResponse(item, req);
+    if (options.afterResponse) process.nextTick(() => options.afterResponse(item, req));
+    if (res.upserted !== undefined) return h.response(item).code(201); // create
+    else return item; // update
   };
 };
 
