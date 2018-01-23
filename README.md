@@ -3,7 +3,7 @@ hapi-forest
 
 [![package on npm](https://img.shields.io/npm/v/hapi-forest.svg)](https://www.npmjs.com/package/hapi-forest)
 [![Travis branch](https://img.shields.io/travis/fiws/hapi-forest/master.svg)](https://travis-ci.org/fiws/hapi-forest)
-![node 6+ required](https://img.shields.io/badge/node-6%2B-brightgreen.svg)
+![node 8+ required](https://img.shields.io/badge/node-8%2B-brightgreen.svg)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/fiws/hapi-forest/master/LICENSE)
 
 ![A FOREST](https://i.imgur.com/5l9cVaD.png)
