@@ -8,7 +8,7 @@ const jsonStream = require('JSONStream');
 module.exports = (route, options) => {
   const Model = options.model;
 
-  return req => {
+  return (req, h) => {
 
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
@@ -36,7 +36,7 @@ module.exports = (route, options) => {
     }).pipe(jsonStream.stringify());
     const stream2 = new stream.Readable().wrap(readStream);
 
-    return stream2; //.type('application/json');
+    return h.response(stream2).type('application/json');
   };
 };
 

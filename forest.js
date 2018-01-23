@@ -6,7 +6,6 @@ const stubJoi = require('./lib/stub-joi');
 const call = new require('call');
 const router = new call.Router();
 
-module.exports = {};
 module.exports.register = (server, opts) =>  {
 
   const defaultSchema = {
