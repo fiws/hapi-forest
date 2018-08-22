@@ -11,7 +11,7 @@ module.exports = (route, options) => {
     const condition = hu.getIdQuery(options, req);
     req.payload[options.idKey] = hu.getId(options, req);
 
-    const query = Model.update(condition, req.payload, {
+    const query = Model.updateOne(condition, req.payload, {
       overwrite: options.overwrite,
       upsert: options.upsert,
     }).lean();
