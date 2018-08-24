@@ -13,7 +13,7 @@ module.exports.register = (server, opts) => {
     preQuery: joi.func().maxArity(1),
     transformResponse: joi.func().maxArity(2),
     type: joi.string().allow([
-      'getOne', 'getAll', 'post', 'put', 'patch', 'delete'
+      'getOne', 'getAll', 'getAllPaginated', 'post', 'put', 'patch', 'delete'
     ]),
   };
 
@@ -21,6 +21,7 @@ module.exports.register = (server, opts) => {
   const handlers = {
     getOne: require('./handlers/getOne'),
     getAll: require('./handlers/getAll'),
+    getAllPaginated: require('./handlers/getAllPaginated'),
     post: require('./handlers/post'),
     put: require('./handlers/put'),
     patch: require('./handlers/patch'),
