@@ -6,7 +6,7 @@ const stubJoi = require('./lib/stub-joi');
 const call = new require('call');
 const router = new call.Router();
 
-module.exports.register = (server, opts) =>  {
+module.exports.register = (server, opts) => {
 
   const defaultSchema = {
     model: joi.func().required(),
@@ -37,7 +37,8 @@ module.exports.register = (server, opts) =>  {
       else options.idKey = analyzed.params[0];
     }
 
-    if (route.method === 'get') {
+    if (options.type !== undefined) handler = handlers[options.type];
+    else if (route.method === 'get') {
       if (/.*\/\?$/.test(route.fingerprint) === true) {
         handler = handlers.getOne;
       } else {

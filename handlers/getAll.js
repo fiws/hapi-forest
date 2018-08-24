@@ -29,7 +29,7 @@ module.exports = (route, options) => {
     if (options.preQuery) options.preQuery(query); // query extension point
 
     const transform = options.transformResponse ?
-      poly => options.transformResponse(poly, req) : undefined;
+      obj => options.transformResponse(obj, req) : undefined;
 
     const readStream = query.where(filter).lean().cursor({
       transform,
