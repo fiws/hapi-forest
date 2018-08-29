@@ -12,6 +12,7 @@ exports.register = server => {
         forest: {
           model: Cat,
           type: 'getAllPaginated',
+          allowSort: true,
         },
       },
     },

@@ -24,6 +24,20 @@ module.exports = (route, options) => {
       }
     }
 
+    if (options.allowSort === true) {
+      // order query ascending or descending if sort property is given
+      let order = 'asc';
+      if (filter.$order && typeof filter.$order === 'string') {
+        if (filter.$order === 'desc') order = 'desc';
+        delete filter.$order;
+      }
+      // sort to a certain property
+      if (filter.$sort && typeof filter.$sort === 'string') {
+        query.sort({ [filter.$sort]: order });
+        delete filter.$sort;
+      }
+    }
+
     let count = await Model.count(filter).lean();
 
     // change query object extension point
@@ -42,5 +56,6 @@ module.exports = (route, options) => {
 module.exports.validOptions = {
   filterByQuery: joi.boolean().default(true),
   allowPagination: joi.boolean().default(true),
+  allowSort: joi.boolean().default(false),
   select: joi.string(),
 };
