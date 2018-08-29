@@ -11,14 +11,17 @@ module.exports = (route, options) => {
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
 
-    // allow the user to limit the number of results, if option allows it
-    if (options.allowLimit === true && req.query.$limit) {
-      // limit query, if limit is a number
-      if (hoek.isInteger(+req.query.$limit)) {
-        const limit = Number.parseInt(req.query.$limit, 10);
-        query.limit(limit);
+    if (options.allowPagination === true) {
+      // start at a certain index
+      if (hoek.isInteger(+filter.$start)) {
+        query.skip(parseInt(filter.$start, 10));
+        delete filter.$start;
       }
-      delete filter.$limit; // remove from filter
+      // limit query, if limit is a number
+      if (hoek.isInteger(+filter.$limit)) {
+        query.limit(parseInt(filter.$limit, 10));
+        delete filter.$limit; // remove from filter
+      }
     }
 
     let count = await Model.count(filter).lean();
@@ -28,7 +31,7 @@ module.exports = (route, options) => {
     if (options.select) query.select(options.select);
     if (options.preQuery) options.preQuery(query); // query extension point
 
-    let result = await query.where(filter).skip(filter.$start).lean();
+    let result = await query.where(filter).lean();
     if (options.transformResponse) result = result.map(obj => options.transformResponse(obj, req));
 
     return h.response(result)
@@ -37,7 +40,7 @@ module.exports = (route, options) => {
 };
 
 module.exports.validOptions = {
-  filterByQuery: joi.boolean().default(false),
-  allowLimit: joi.boolean().default(true),
+  filterByQuery: joi.boolean().default(true),
+  allowPagination: joi.boolean().default(true),
   select: joi.string(),
 };
