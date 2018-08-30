@@ -11,17 +11,14 @@ module.exports = (route, options) => {
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
 
-    if (options.allowPagination === true) {
-      // start at a certain index
-      if (hoek.isInteger(+filter.$start)) {
-        query.skip(parseInt(filter.$start, 10));
-        delete filter.$start;
-      }
-      // limit query, if limit is a number
-      if (hoek.isInteger(+filter.$limit)) {
-        query.limit(parseInt(filter.$limit, 10));
-        delete filter.$limit; // remove from filter
-      }
+    if (hoek.isInteger(+filter.$start)) {
+      query.skip(parseInt(filter.$start, 10));
+      delete filter.$start;
+    }
+    // limit query, if limit is a number
+    if (hoek.isInteger(+filter.$limit)) {
+      query.limit(parseInt(filter.$limit, 10));
+      delete filter.$limit; // remove from filter
     }
 
     if (options.allowSort === true) {
@@ -55,7 +52,6 @@ module.exports = (route, options) => {
 
 module.exports.validOptions = {
   filterByQuery: joi.boolean().default(true),
-  allowPagination: joi.boolean().default(true),
-  allowSort: joi.boolean().default(false),
+  allowSort: joi.boolean().default(true),
   select: joi.string(),
 };
