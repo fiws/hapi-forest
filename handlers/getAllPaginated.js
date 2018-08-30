@@ -25,7 +25,7 @@ module.exports = (route, options) => {
       // order query ascending or descending if sort property is given
       let order = 'asc';
       if (filter.$order && typeof filter.$order === 'string') {
-        if (filter.$order === 'desc') order = 'desc';
+        if (filter.$order.toLowerCase() === 'desc') order = 'desc';
         delete filter.$order;
       }
       // sort to a certain property
