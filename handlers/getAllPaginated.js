@@ -35,7 +35,7 @@ module.exports = (route, options) => {
       }
     }
 
-    let count = await Model.count(filter).lean();
+    let count = await Model.countDocuments(filter).lean();
 
     // change query object extension point
     if (options.transformQuery) filter = options.transformQuery(filter);
