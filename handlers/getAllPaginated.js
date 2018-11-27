@@ -1,7 +1,6 @@
 'use strict';
 
 const joi = require('joi');
-const hoek = require('hoek');
 
 module.exports = (route, options) => {
   const Model = options.model;
@@ -11,12 +10,12 @@ module.exports = (route, options) => {
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
 
-    if (hoek.isInteger(+filter.$start)) {
+    if (Number.isInteger(+filter.$start)) {
       query.skip(parseInt(filter.$start, 10));
       delete filter.$start;
     }
     // limit query, if limit is a number
-    if (hoek.isInteger(+filter.$limit)) {
+    if (Number.isInteger(+filter.$limit)) {
       query.limit(parseInt(filter.$limit, 10));
       delete filter.$limit; // remove from filter
     }

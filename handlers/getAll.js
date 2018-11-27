@@ -1,7 +1,6 @@
 'use strict';
 
 const joi = require('joi');
-const hoek = require('hoek');
 const stream = require('stream');
 const jsonStream = require('JSONStream');
 
@@ -16,7 +15,7 @@ module.exports = (route, options) => {
     // allow the user to limit the number of results, if option allows it
     if (options.allowLimit === true && req.query.$limit) {
       // limit query, if limit is a number
-      if (hoek.isInteger(+req.query.$limit)) {
+      if (Number.isInteger(+req.query.$limit)) {
         const limit = Number.parseInt(req.query.$limit, 10);
         query.limit(limit);
       }
