@@ -1,6 +1,6 @@
 {
   "name": "hapi-forest",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A hapi plugin to generate routes based on mongoose models",
   "main": "forest.js",
   "scripts": {
