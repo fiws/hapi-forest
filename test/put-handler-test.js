@@ -53,12 +53,13 @@ test('create a new database entry from model with timestamps', async t => {
     }
   });
 
-  const res = await put('PutCatTimestamp', { fromTest: 'put' });
+  const res = await put('PutCatTimestamp', { fromTest: 'put', meta: { age: 2 } });
   t.is(res.statusCode, 201, 'Status code is 201');
 
   const dbEntry = await CatModelTimestamps.findOne({ name: 'PutCatTimestamp' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
   t.is(dbEntry.name, 'PutCatTimestamp', 'entry has right name');
+  t.is(dbEntry.meta.age, 2, 'entry has right meta');
 });
 
 test('update an existing database entry', async t => {
