@@ -31,6 +31,8 @@ test('create a new database entry', async t => {
 
   const res = await put('PutCat1', { fromTest: 'put' });
   t.is(res.statusCode, 201, 'Status code is 201');
+  t.is(res.result.name, 'PutCat1', 'Correct name saved');
+  t.is(res.result.fromTest, 'put', 'Correct data saved');
 
   const dbEntry = await CatModel.findOne({ name: 'PutCat1' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
@@ -55,6 +57,8 @@ test('create a new database entry from model with timestamps', async t => {
 
   const res = await put('PutCatTimestamp', { fromTest: 'put', meta: { age: 2 } });
   t.is(res.statusCode, 201, 'Status code is 201');
+  t.is(res.result.name, 'PutCatTimestamp', 'response has correct name');
+  t.is(res.result.meta.age, 2, 'response has correct meta');
 
   const dbEntry = await CatModelTimestamps.findOne({ name: 'PutCatTimestamp' }).lean();
   t.true(dbEntry !== null, 'db entry exists');
@@ -94,6 +98,7 @@ test('update an existing database entry', async t => {
 
   const res2 = await put('PutCat2', { fromTest: 'put', meta: { age: 1 } });
   t.is(res2.statusCode, 200, 'Status code is 200');
+  t.is(res2.result.meta.age, 1, 'entry the updated age');
 
   const updatedDbEntry = await CatModel.findOne({ name: 'PutCat2' }).lean();
   t.true(updatedDbEntry !== null, 'db entry exists');
