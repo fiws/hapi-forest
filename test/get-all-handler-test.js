@@ -2,7 +2,7 @@ const test = require('ava');
 // TODO: separate connection for each test
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/forest-test', { useMongoClient: true });
+mongoose.connect('mongodb://localhost/forest-test');
 const createServer = require('./helpers/createServer.js');
 const CatModel = require('./fixtures/test-cat-model');
 

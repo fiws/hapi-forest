@@ -4,7 +4,7 @@ require('make-promises-safe');
 const hapi = require('hapi');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/forest-example', { useMongoClient: true });
+mongoose.connect('mongodb://localhost/forest-example');
 
 const server = new hapi.server({ port: 8080 });
 

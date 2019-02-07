@@ -54,7 +54,7 @@
     "inert": "^5.0.1",
     "lint-staged": "^6.0.0",
     "make-promises-safe": "^1.1.0",
-    "mongoose": "^4.7.2",
+    "mongoose": "^5.4.8",
     "nodemon": "^1.13.3",
     "nyc": "^11.3.0",
     "pre-commit": "^1.1.3",

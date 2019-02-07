@@ -11,10 +11,10 @@ module.exports = (route, options) => {
     const condition = hu.getIdQuery(options, req);
     req.payload[options.idKey] = hu.getId(options, req);
 
-    const query = Model.updateOne(condition, req.payload, {
-      overwrite: options.overwrite,
-      upsert: options.upsert,
-    }).lean();
+    const { overwrite, upsert } = options;
+    const query = overwrite
+      ? Model.replaceOne(condition, req.payload, { upsert })
+      : Model.updateOne(condition, req.payload, { upsert });
 
     if (options.preQuery) options.preQuery(query); // query extension point
     let res = await query.exec().catch(hu.handleError);
