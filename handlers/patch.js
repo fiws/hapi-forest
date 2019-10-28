@@ -11,7 +11,7 @@ module.exports = (route, options) => {
 
     const query = hu.getIdQuery(options, req);
     if (options.preQuery) options.preQuery(query); // query extension point
-    let item = await Model.findOneAndUpdate(query, req.payload, { new: true }).lean().exec();
+    let item = await Model.findOneAndUpdate(query, req.payload, { new: true }).lean().catch(hu.handleError);
     if (item === null) throw boom.notFound(`${Model.modelName} not found`);
     if (options.transformResponse) item = options.transformResponse(item, req);
     if (options.afterResponse) process.nextTick(() => options.afterResponse(item, req));
