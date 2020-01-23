@@ -41,6 +41,7 @@ module.exports = (route, options) => {
 
 module.exports.validOptions = {
   filterByQuery: joi.boolean().default(false),
+  transformQuery: joi.func().maxArity(1),
   allowLimit: joi.boolean().default(true),
   select: joi.string(),
 };
