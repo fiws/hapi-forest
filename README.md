@@ -174,15 +174,3 @@ server.route({
   }
 });
 ```
-
-## Peer dependencies
-
-### mongoose
-
-Be aware that hapi-forest needs [mongoose](https://mongoosejs.com/).
-Particularly `collection.findOneAndUpdate()` needs the `useFindAndModify` option set to `false`:
-```JavaScript
-  mongoose.set('useFindAndModify', false);
-```
-This will prevent mongoose from using `collection.findAndModify()` internally when hapi-forest is
-using `model.findOneAndUpdate()`.
