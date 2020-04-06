@@ -11,11 +11,6 @@ hapi-forest
 Provides REST handlers for mongoose models. Can also generate ready to use
 routes, for fast bootstrapping.
 
-You can already play around with hapi-forest, but this is missing:
-* [x] RESTfull `PUT` route
-* [ ] A lot more test coverage
-* [x] More ways to customize the generated queries.
-
 ## Quickstart
 
 1. Install it
