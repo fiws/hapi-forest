@@ -1,6 +1,6 @@
 'use strict';
 
-const joi = require('joi');
+const joi = require('@hapi/joi');
 
 module.exports = (route, options) => {
   const Model = options.model;

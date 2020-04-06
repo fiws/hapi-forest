@@ -33,20 +33,21 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "@hapi/call": "^8.0.0",
+    "@hapi/hoek": "^9.0.4",
+    "@hapi/joi": "^15.1.1",
     "JSONStream": "^1.1.4",
-    "joi": "^13.0.2",
     "lodash": "^4.15.0"
   },
   "peerDependencies": {
-    "boom": "*",
-    "call": "*",
+    "@hapi/hapi": ">= 19.0.0",
     "mongoose": "^5.2.9"
   },
   "devDependencies": {
+    "@hapi/hapi": "^19.1.1",
     "ava": "^0.17.0",
     "blipp": "^3.0.0",
-    "boom": "^7.1.1",
-    "call": "^5.0.1",
     "eslint": "^4.13.1",
     "eslint-plugin-ava": "^4.0.0",
     "hapi": "^17.1.1",

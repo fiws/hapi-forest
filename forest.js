@@ -1,9 +1,9 @@
 'use strict';
 
-const joi = require('joi');
-const hoek = require('hoek');
+const joi = require('@hapi/joi');
+const hoek = require('@hapi/hoek');
 const stubJoi = require('./lib/stub-joi');
-const call = new require('call');
+const call = new require('@hapi/call');
 const router = new call.Router();
 
 module.exports.register = (server, opts) => {

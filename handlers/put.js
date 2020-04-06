@@ -1,6 +1,6 @@
 'use strict';
 
-const joi = require('joi');
+const joi = require('@hapi/joi');
 const hu = require('../lib/handler-utils');
 
 module.exports = (route, options) => {

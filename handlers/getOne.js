@@ -1,7 +1,7 @@
 'use strict';
 
-const boom = require('boom');
-const joi = require('joi');
+const boom = require('@hapi/boom');
+const joi = require('@hapi/joi');
 const hu = require('../lib/handler-utils');
 
 module.exports = (route, options) => {

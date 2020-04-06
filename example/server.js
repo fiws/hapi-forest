@@ -1,12 +1,14 @@
 'use strict';
 
 require('make-promises-safe');
-const hapi = require('hapi');
+const hapi = require('@hapi/hapi');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/forest-example');
 
 const server = new hapi.server({ port: 8080 });
+
+server.validator(require('@hapi/joi'));
 
 const plugins = [
   {
