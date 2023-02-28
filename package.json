@@ -50,7 +50,6 @@
     "blipp": "^3.0.0",
     "eslint": "^4.13.1",
     "eslint-plugin-ava": "^4.0.0",
-    "hapi": "^17.1.1",
     "hapi-swagger": "^8.0.0",
     "inert": "^5.0.1",
     "lint-staged": "^6.0.0",
