@@ -1,18 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-var schema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  owner: { type: mongoose.Schema.Types.Oid },
-  likes: [ String ],
-  dislikes: [ String ],
-  born: { type: Date },
-  meta: {
-    age: { type: Number },
-    weight: { type: Number },
+var schema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, unique: true },
+    owner: { type: mongoose.Schema.Types.Oid },
+    likes: [String],
+    dislikes: [String],
+    born: { type: Date },
+    meta: {
+      age: { type: Number },
+      weight: { type: Number },
+    },
+    fromTest: String,
   },
-  fromTest: String,
-}, {
-  timestamps: false
-});
+  {
+    timestamps: false,
+  }
+);
 
-module.exports = mongoose.model('TestCat', schema);
+module.exports = mongoose.model("TestCat", schema);

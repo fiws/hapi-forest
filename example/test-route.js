@@ -1,23 +1,21 @@
-'use strict';
+"use strict";
 
-const Cat = require('./models/cat-model');
+const Cat = require("./models/cat-model");
 
-exports.register = server => {
-
+exports.register = (server) => {
   server.route({
-    method: 'GET',
-    path: '/test/getAllPaginated',
+    method: "GET",
+    path: "/test/getAllPaginated",
     config: {
       handler: {
         forest: {
           model: Cat,
-          type: 'getAllPaginated',
+          type: "getAllPaginated",
           allowSort: true,
         },
       },
     },
   });
-
 };
 
-exports.name = 'test-route';
+exports.name = "test-route";

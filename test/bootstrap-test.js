@@ -1,21 +1,21 @@
-const test = require('ava');
-const hapi = require('hapi');
+const test = require("ava");
+const hapi = require("@hapi/hapi");
 
-test('register without errors (no opts)', async t => {
+test("register without errors (no opts)", async (t) => {
   const server = new hapi.Server();
-  await t.notThrows(server.register(require('../forest')));
+  await t.notThrows(server.register(require("../forest")));
 });
 
-test('register and bootstrap', async t => {
-  const server = new hapi.Server({ host: 'localhost' }); // will never be used
-  const register = server.register({
-    plugin: require('../forest'),
+test("register and bootstrap", async (t) => {
+  const server = new hapi.Server(); // will never be used
+  server.validator(require("joi"));
+
+  await server.register({
+    plugin: require("../forest"),
     options: {
-      bootstrap: [
-        require('./fixtures/test-cat-model'),
-      ]
-    }
+      bootstrap: [require("./fixtures/test-cat-model")],
+    },
   });
-  await t.notThrows(register);
+  t.pass();
   // TODO: check for routes
 });

@@ -1,13 +1,12 @@
-'use strict';
+"use strict";
 
-const joi = require('@hapi/joi');
-const hu = require('../lib/handler-utils');
+const joi = require("joi");
+const hu = require("../lib/handler-utils");
 
 module.exports = (route, options) => {
   const Model = options.model;
 
   return async (req, h) => {
-
     const condition = hu.getIdQuery(options, req);
     req.payload[options.idKey] = hu.getId(options, req);
 
@@ -21,15 +20,16 @@ module.exports = (route, options) => {
     let item = await Model.findOne(condition).lean().exec();
 
     if (options.transformResponse) item = options.transformResponse(item, req);
-    if (options.afterResponse) process.nextTick(() => options.afterResponse(item, req));
+    if (options.afterResponse)
+      process.nextTick(() => options.afterResponse(item, req));
     if (res.upserted !== undefined) return h.response(item).code(201); // create
     else return item; // update
   };
 };
 
-module.exports.validOptions = {
+module.exports.validOptions = joi.object({
   overwrite: joi.boolean().default(true), // "true" PUT by default – overwrite doc
   upsert: joi.boolean().default(true),
   afterResponse: joi.func().maxArity(2),
   idKey: hu.schemas.idKey,
-};
+});

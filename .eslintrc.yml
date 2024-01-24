@@ -27,7 +27,7 @@ rules:
     - int32Hint: true
   quotes:
     - 1
-    - "single"
+    - "double"
   object-curly-spacing:
     - 1
     - "always"

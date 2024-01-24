@@ -1,14 +1,13 @@
-'use strict';
+"use strict";
 
-const joi = require('@hapi/joi');
-const stream = require('stream');
-const jsonStream = require('JSONStream');
+const joi = require("joi");
+const stream = require("stream");
+const jsonStream = require("JSONStream");
 
 module.exports = (route, options) => {
   const Model = options.model;
 
   return (req, h) => {
-
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
 
@@ -27,21 +26,26 @@ module.exports = (route, options) => {
     if (options.select) query.select(options.select);
     if (options.preQuery) options.preQuery(query); // query extension point
 
-    const transform = options.transformResponse ?
-      obj => options.transformResponse(obj, req) : undefined;
+    const transform = options.transformResponse
+      ? (obj) => options.transformResponse(obj, req)
+      : undefined;
 
-    const readStream = query.where(filter).lean().cursor({
-      transform,
-    }).pipe(jsonStream.stringify());
+    const readStream = query
+      .where(filter)
+      .lean()
+      .cursor({
+        transform,
+      })
+      .pipe(jsonStream.stringify());
     const stream2 = new stream.Readable().wrap(readStream);
 
-    return h.response(stream2).type('application/json');
+    return h.response(stream2).type("application/json");
   };
 };
 
-module.exports.validOptions = {
+module.exports.validOptions = joi.object({
   filterByQuery: joi.boolean().default(false),
   transformQuery: joi.func().maxArity(1),
   allowLimit: joi.boolean().default(true),
   select: joi.string(),
-};
+});

@@ -1,28 +1,32 @@
-'use strict';
+"use strict";
 
-require('make-promises-safe');
-const hapi = require('@hapi/hapi');
-const mongoose = require('mongoose');
+require("make-promises-safe");
+const hapi = require("@hapi/hapi");
+const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/forest-example');
+mongoose.connect("mongodb://localhost/forest-example");
 
-const server = new hapi.server({ port: 8080 });
+const server = new hapi.server();
 
-server.validator(require('@hapi/joi'));
+server.validator(require("joi"));
 
 const plugins = [
   {
-    plugin: require('../forest'),
+    plugin: require("../forest"),
     options: {
-      bootstrap: [ require('./models/cat-model'), require('./models/user-model') ]
-    }
+      bootstrap: [
+        require("./models/cat-model"),
+        require("./models/user-model"),
+      ],
+    },
   },
-  require('./test-route'),
+  require("./test-route"),
   // TODO: require('vision'), require('inert'), require('hapi-swagger'),
-  require('blipp'),
+  require("blipp"),
 ];
 
-server.register(plugins)
+server
+  .register(plugins)
   .catch(console.error)
   .then(() => server.start())
   .then(() => console.log(`example server started @ ${server.info.uri}`));

@@ -1,12 +1,11 @@
-'use strict';
+"use strict";
 
-const joi = require('@hapi/joi');
+const joi = require("joi");
 
 module.exports = (route, options) => {
   const Model = options.model;
 
   return async (req, h) => {
-
     let filter = options.filterByQuery ? req.query : {};
     let query = Model.find();
 
@@ -22,13 +21,13 @@ module.exports = (route, options) => {
 
     if (options.allowSort === true) {
       // order query ascending or descending if sort property is given
-      let order = 'asc';
-      if (filter.$order && typeof filter.$order === 'string') {
-        if (filter.$order.toLowerCase() === 'desc') order = 'desc';
+      let order = "asc";
+      if (filter.$order && typeof filter.$order === "string") {
+        if (filter.$order.toLowerCase() === "desc") order = "desc";
         delete filter.$order;
       }
       // sort to a certain property
-      if (filter.$sort && typeof filter.$sort === 'string') {
+      if (filter.$sort && typeof filter.$sort === "string") {
         query.sort({ [filter.$sort]: order });
         delete filter.$sort;
       }
@@ -42,16 +41,16 @@ module.exports = (route, options) => {
     if (options.preQuery) options.preQuery(query); // query extension point
 
     let result = await query.where(filter).lean();
-    if (options.transformResponse) result = result.map(obj => options.transformResponse(obj, req));
+    if (options.transformResponse)
+      result = result.map((obj) => options.transformResponse(obj, req));
 
-    return h.response(result)
-      .header('x-total-count', count);
+    return h.response(result).header("x-total-count", count);
   };
 };
 
-module.exports.validOptions = {
+module.exports.validOptions = joi.object({
   filterByQuery: joi.boolean().default(true),
   transformQuery: joi.func().maxArity(1),
   allowSort: joi.boolean().default(true),
   select: joi.string(),
-};
+});
