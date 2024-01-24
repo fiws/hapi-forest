@@ -12,8 +12,12 @@ module.exports = (route, options) => {
 
     const { overwrite, upsert } = options;
     const query = overwrite
-      ? Model.replaceOne(condition, req.payload, { upsert })
-      : Model.updateOne(condition, req.payload, { upsert });
+      ? Model.replaceOne(condition, req.payload, {
+          upsert,
+        })
+      : Model.updateOne(condition, req.payload, {
+          upsert,
+        });
 
     if (options.preQuery) options.preQuery(query); // query extension point
     let res = await query.exec().catch(hu.handleError);
@@ -22,7 +26,7 @@ module.exports = (route, options) => {
     if (options.transformResponse) item = options.transformResponse(item, req);
     if (options.afterResponse)
       process.nextTick(() => options.afterResponse(item, req));
-    if (res.upserted !== undefined) return h.response(item).code(201); // create
+    if (res.upsertedCount !== 0) return h.response(item).code(201); // create
     else return item; // update
   };
 };

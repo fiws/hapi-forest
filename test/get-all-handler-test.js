@@ -89,7 +89,3 @@ test("getAll limit does not affect filter", async (t) => {
   t.is(resGetFilterAllMore.statusCode, 200);
   t.is(JSON.parse(resGetFilterAllMore.result).length, 2, "two results");
 });
-
-test.todo("query test");
-test.todo("empty db test");
-test.todo("filled db");
