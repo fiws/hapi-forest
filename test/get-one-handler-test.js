@@ -9,7 +9,7 @@ const CatModel = require("./fixtures/test-cat-model");
 let testId;
 // cleanup previous test runs
 test.before(async () => {
-  await CatModel.remove({ fromTest: "getOne" });
+  await CatModel.deleteMany({ fromTest: "getOne" });
 
   const res = await CatModel.create({
     name: "GetOneCat1",

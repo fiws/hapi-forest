@@ -8,8 +8,8 @@ const CatModel = require("./fixtures/test-cat-model");
 const CatModelTimestamps = require("./fixtures/test-cat-model-with-timestamp.js");
 
 test.beforeEach(async (t) => {
-  await t.notThrows(CatModel.remove({ fromTest: "patch" }));
-  await t.notThrows(CatModelTimestamps.remove({ fromTest: "patch" }));
+  await CatModel.deleteMany({ fromTest: "patch" });
+  await CatModelTimestamps.deleteMany({ fromTest: "patch" });
   await createServer(t);
 });
 

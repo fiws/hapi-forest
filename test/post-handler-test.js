@@ -7,7 +7,7 @@ const createServer = require("./helpers/createServer.js");
 const CatModel = require("./fixtures/test-cat-model");
 
 test.beforeEach(async (t) => {
-  await t.notThrows(t.notThrows(CatModel.remove({ fromTest: "post" })));
+  await CatModel.deleteMany({ fromTest: "post" });
   const server = await createServer(t);
   server.route({
     method: "POST",

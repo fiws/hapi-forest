@@ -10,7 +10,7 @@ module.exports = (route, options) => {
   return async (req) => {
     const query = hu.getIdQuery(options, req);
     if (options.preQuery) options.preQuery(query); // query extension point
-    let item = await Model.findOneAndRemove(query).lean().exec();
+    let item = await Model.findOneAndDelete(query).lean().exec();
     if (item === null) throw boom.notFound(`${Model.modelName} not found`);
     if (options.transformResponse) item = options.transformResponse(item, req);
     if (options.afterResponse)
