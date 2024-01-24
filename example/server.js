@@ -21,7 +21,6 @@ const plugins = [
     },
   },
   require("./test-route"),
-  // TODO: require('vision'), require('inert'), require('hapi-swagger'),
   require("blipp"),
 ];
 
